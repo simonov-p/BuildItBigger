@@ -16,13 +16,11 @@ public class JokeActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_joke);
 
+        TextView textView = (TextView) findViewById(R.id.text);
+
         Intent intent = getIntent();
-        if (intent != null && intent.getStringExtra(JOKE_KEY)!= null){
-            TextView textView = (TextView)findViewById(R.id.text);
+        if (intent != null && intent.getStringExtra(JOKE_KEY) != null) {
             textView.setText(intent.getStringExtra(JOKE_KEY));
-
         }
-
-
     }
 }
