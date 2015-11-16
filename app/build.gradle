@@ -25,4 +25,5 @@ dependencies {
     // Added for AdMob
     //compile 'com.google.android.gms:play-services:7.3.0'  > Error: more than one library with package name 'com.google.android.gms'
     compile 'com.google.android.gms:play-services-ads:8.3.0'
+    compile project (":jokelibrary")
 }
