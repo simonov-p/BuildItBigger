@@ -21,10 +21,11 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:22.1.1'
     // Added for AdMob
     //compile 'com.google.android.gms:play-services:7.3.0'  > Error: more than one library with package name 'com.google.android.gms'
+    compile project(":jokelibrary")
+    compile project(":jokesdisplay")
+    compile 'com.android.support:appcompat-v7:22.1.0'
     compile 'com.google.android.gms:play-services-ads:8.3.0'
-    compile project (":jokelibrary")
-    compile project (":jokesdisplay")
+    compile project(path: ':backend', configuration: 'android-endpoints')
 }
