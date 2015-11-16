@@ -6,6 +6,7 @@
 
 package com.example.petr.myapplication.backend;
 
+import com.example.JokeProvider;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
@@ -35,6 +36,10 @@ public class MyEndpoint {
         response.setData("Hi, " + name);
 
         return response;
+    }
+
+    public JokeProvider pullJoke() {
+        return new JokeProvider();
     }
 
 }
