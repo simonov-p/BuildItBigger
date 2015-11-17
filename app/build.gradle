@@ -17,6 +17,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    productFlavors {
+        free {
+            applicationId "com.udacity.gradle.builditbigger.free"
+        }
+        paid {
+            applicationId "com.udacity.gradle.builditbigger.paid"
+        }
+    }
 }
 
 dependencies {
@@ -25,7 +33,8 @@ dependencies {
     //compile 'com.google.android.gms:play-services:7.3.0'  > Error: more than one library with package name 'com.google.android.gms'
     compile project(":jokelibrary")
     compile project(":jokesdisplay")
-    compile 'com.android.support:appcompat-v7:22.1.0'
-    compile 'com.google.android.gms:play-services-ads:8.3.0'
     compile project(path: ':backend', configuration: 'android-endpoints')
+    freeCompile 'com.google.android.gms:play-services-ads:8.3.0'
+    compile 'com.android.support:appcompat-v7:22.2.1'
+    compile 'com.android.support:support-v4:22.2.1'
 }
