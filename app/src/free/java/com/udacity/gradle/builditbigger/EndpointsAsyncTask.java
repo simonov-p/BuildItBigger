@@ -3,16 +3,20 @@ package com.udacity.gradle.builditbigger;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.provider.Settings;
 import android.util.Log;
 import android.util.Pair;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.petr.myapplication.backend.myApi.MyApi;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
 import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
+import com.udacity.gradle.builditbigger.R;
 
 import java.io.IOException;
 
@@ -27,8 +31,36 @@ public class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, S
     private static MyApi myApiService = null;
     private Context context;
 
+    private InterstitialAd mInterstitialAd;
+    private String mJokeText;
+
     public EndpointsAsyncTask(Context context) {
         this.context = context;
+    }
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        mInterstitialAd = new InterstitialAd(context);
+        PublisherAdRequest adRequest = new PublisherAdRequest.Builder()
+                .addTestDevice(Settings.Secure.getString(context.getContentResolver(),
+                        Settings.Secure.ANDROID_ID))
+                .build();
+
+        mInterstitialAd.setAdUnitId(context.getString(R.string.interstitial_ad_unit_id));
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                jokeActivityDisplay();
+            }
+        });
+    }
+
+    private void jokeActivityDisplay() {
+        // Create the text message with a string
+        Intent sendIntent = new Intent(context, JokeActivity.class);
+        sendIntent.putExtra(JOKE_KEY, mJokeText);
+        context.startActivity(sendIntent);
     }
 
     @Override
@@ -66,11 +98,11 @@ public class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, S
 
     @Override
     protected void onPostExecute(String result) {
-        Toast.makeText(context, result, Toast.LENGTH_LONG).show();
-
-        // Create the text message with a string
-        Intent sendIntent = new Intent(context, JokeActivity.class);
-        sendIntent.putExtra(JOKE_KEY, result);
-        context.startActivity(sendIntent);
+        mJokeText = result;
+        if (mInterstitialAd.isLoaded()) {
+                mInterstitialAd.show();
+        } else {
+            jokeActivityDisplay();
+        }
     }
 }
