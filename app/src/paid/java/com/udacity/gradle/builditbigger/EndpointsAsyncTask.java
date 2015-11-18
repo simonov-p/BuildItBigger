@@ -25,8 +25,6 @@ import simonov.pk.jokesdisplay.JokeActivity;
  * Created by petr on 17-Nov-15.
  */
 class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, String> {
-    private static final String JOKE_KEY = "joke_key";
-
     private static MyApi myApiService = null;
     private Context context;
     private ProgressBar mProgressBar;
@@ -49,7 +47,7 @@ class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, String> 
     private void jokeActivityDisplay() {
         // Create the text message with a string
         Intent sendIntent = new Intent(context, JokeActivity.class);
-        sendIntent.putExtra(JOKE_KEY, mJokeText);
+        sendIntent.putExtra(context.getString(R.string.joke_key), mJokeText);
         context.startActivity(sendIntent);
     }
 
@@ -58,7 +56,7 @@ class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, String> 
         if(myApiService == null) {  // Only do this once
             MyApi.Builder builder = new MyApi.Builder(AndroidHttp.newCompatibleTransport(),
                     new AndroidJsonFactory(), null)
-                    .setRootUrl("https://cloudenginetest-992.appspot.com/_ah/api/");
+                    .setRootUrl(context.getString(R.string.server_url));
             myApiService = builder.build();
         }
         context = params[0].first;
@@ -77,5 +75,6 @@ class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, String> 
             mProgressBar.setVisibility(View.GONE);
         }
         mJokeText = result;
+        jokeActivityDisplay();
     }
 }

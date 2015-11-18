@@ -21,7 +21,6 @@ import simonov.pk.jokesdisplay.JokeActivity;
 
 public class MainActivity extends ActionBarActivity {
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,7 +28,6 @@ public class MainActivity extends ActionBarActivity {
         getSupportFragmentManager().beginTransaction().
                 add(R.id.fragment,new MainActivityFragment()).commit();
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -59,6 +57,6 @@ public class MainActivity extends ActionBarActivity {
         Log.e("mytag:device id:", Settings.Secure.getString(this.getContentResolver(),
                 Settings.Secure.ANDROID_ID));
         EndpointsAsyncTask asyncTask = new EndpointsAsyncTask(this, progressBar);
-        asyncTask.execute(new Pair<Context, String>(this, "Manfred"));
+        asyncTask.execute(new Pair<Context, String>(this, null));
     }
 }

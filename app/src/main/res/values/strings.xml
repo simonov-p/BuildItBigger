@@ -4,5 +4,8 @@
     <string name="button_text">Tell Joke</string>
     <string name="action_settings">Settings</string>
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="interstitial_ad_unit_id" translatable="false">ca-app-pub-1651911101126569/4148731533</string>
     <string name="device_id">33a771c405438d23</string>
+    <string name="server_url">http://10.0.2.2:8080/_ah/api/</string>
+    <string name="joke_key">joke_key</string>
 </resources>

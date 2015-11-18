@@ -29,12 +29,9 @@ import simonov.pk.jokesdisplay.JokeActivity;
  * Created by petr on 17-Nov-15.
  */
 class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, String> {
-    private static final String JOKE_KEY = "joke_key";
-
     private static MyApi myApiService = null;
     private Context context;
     private ProgressBar mProgressBar;
-
 
     private InterstitialAd mInterstitialAd;
     private String mJokeText;
@@ -55,7 +52,7 @@ class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, String> 
     private void jokeActivityDisplay() {
         // Create the text message with a string
         Intent sendIntent = new Intent(context, JokeActivity.class);
-        sendIntent.putExtra(JOKE_KEY, mJokeText);
+        sendIntent.putExtra(context.getString(R.string.joke_key), mJokeText);
         context.startActivity(sendIntent);
     }
 
@@ -67,7 +64,7 @@ class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, String> 
                     // options for running against local devappserver
                     // - 10.0.2.2 is localhost's IP address in Android emulator
                     // - turn off compression when running against local devappserver
-                    .setRootUrl("http://10.0.2.2:8080/_ah/api/")
+                    .setRootUrl(context.getString(R.string.server_url))
 //                    .setRootUrl("https://cloudenginetest-992.appspot.com/_ah/api/")
                     .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
                         @Override
@@ -79,13 +76,9 @@ class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, String> 
 
             myApiService = builder.build();
         }
-
         context = params[0].first;
-        String name = params[0].second;
         try {
-            Log.e("mytag", myApiService.pullJoke().execute().getJoke());
             return myApiService.pullJoke().execute().getJoke();
-//            return myApiService.sayHi(name).execute().getData();
         } catch (IOException e) {
             return e.getMessage();
         }
@@ -121,12 +114,11 @@ class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, String> 
                 jokeActivityDisplay();
             }
         });
+
         AdRequest ar = new AdRequest
                 .Builder()
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-//                .addTestDevice(context.getString(R.string.device_id))
-                .addTestDevice(Settings.Secure.getString(context.getContentResolver(),
-                        Settings.Secure.ANDROID_ID))
+                .addTestDevice(context.getString(R.string.device_id))
                 .build();
         mInterstitialAd.loadAd(ar);
     }
