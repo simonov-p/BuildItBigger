@@ -2,12 +2,15 @@ package com.udacity.gradle.builditbigger;
 
 import android.content.Context;
 import android.content.Intent;
+import android.provider.Settings;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +26,8 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getSupportFragmentManager().beginTransaction().
+                add(R.id.fragment,new MainActivityFragment()).commit();
     }
 
 
@@ -49,7 +54,11 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void tellJoke(View view){
-        EndpointsAsyncTask asyncTask = new EndpointsAsyncTask(this);
+        ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressbar);
+
+        Log.e("mytag:device id:", Settings.Secure.getString(this.getContentResolver(),
+                Settings.Secure.ANDROID_ID));
+        EndpointsAsyncTask asyncTask = new EndpointsAsyncTask(this, progressBar);
         asyncTask.execute(new Pair<Context, String>(this, "Manfred"));
     }
 }
